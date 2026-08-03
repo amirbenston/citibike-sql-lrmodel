@@ -1,0 +1,19 @@
+with daily_rides as (
+select DATE(starttime) as ride_date,count(*) as num_rides, round(avg(tripduration/60),2) as avg_duration_min
+from `bigquery-public-data.new_york_citibike.citibike_trips`
+WHERE starttime IS NOT NULL
+group by ride_date
+order by ride_date
+),
+daily_weather as (
+select date(cast(year as int64),cast(mo as int64), cast(da as int64)) as obs_date,temp as temp_f, `max` as max_temp_f, `min` as min_temp_f, wdsp as wind_speed_knots, prcp as precip_in
+FROM `bigquery-public-data.noaa_gsod.gsod20*`
+WHERE stn = "725030" and year between "2013" and "2018"
+)
+select ride_date, num_rides, avg_duration_min, temp_f, max_temp_f, min_temp_f, wind_speed_knots, precip_in, format_date("%A", daily_rides.ride_date) as day_of_week, extract(month from daily_rides.ride_date) as month
+from daily_rides
+inner join daily_weather
+on daily_rides.ride_date = daily_weather.obs_date
+order by daily_rides.ride_date;
+
+-- daily_weather includes all days throughout the years 2013-2018 every date has a recorded weather at LGA but but citi bike does not have recorded ride data for all days throughout that timespan for instance our first recorded ride happens in july 2013 and not january so when we use inner join days that have no recorded ride data gets dropped out
