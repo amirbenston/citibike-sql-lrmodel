@@ -1,0 +1,3 @@
+select starttime, stoptime,tripduration
+from `bigquery-public-data.new_york_citibike.citibike_trips`
+limit 10;

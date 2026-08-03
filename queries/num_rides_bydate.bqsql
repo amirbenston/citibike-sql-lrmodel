@@ -1,0 +1,5 @@
+select DATE(starttime) as ride_date,count(*) as num_rides
+from `bigquery-public-data.new_york_citibike.citibike_trips`
+WHERE starttime IS NOT NULL
+group by ride_date
+order by ride_date;

@@ -1,0 +1,3 @@
+select count(*) as total_trips
+from `bigquery-public-data.new_york_citibike.citibike_trips`;
+-- it's unpractical because the csv file is way to big and has way to many rows I won't be able to just display all of the data contained in the csv using pandas I would have some serious hurdles to go through just to get it to display at all and pandas uses local ram where as big query uses cloud storage. so thiers a possiblity that even attempted to load such data using pandas would crash your hardware.

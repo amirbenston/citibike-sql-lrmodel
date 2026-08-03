@@ -1,0 +1,4 @@
+select concat(mo,'-',da,'-',year) as obs_date,temp as temp_f, `max` as max_temp_f, `min` as min_temp_f, wdsp as wind_speed_knots, prcp as precip_in
+FROM `bigquery-public-data.noaa_gsod.gsod20*`
+WHERE stn like "%725030%" and year between "2013" and "2018"
+order by obs_date
